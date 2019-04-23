@@ -22,6 +22,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	@Qualifier("userDaoImpl")
 	private UserDao userDao;
+	
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
 	}

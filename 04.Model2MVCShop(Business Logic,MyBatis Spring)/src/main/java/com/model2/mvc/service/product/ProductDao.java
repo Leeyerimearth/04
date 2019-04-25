@@ -17,7 +17,7 @@ public interface ProductDao {
 	
 	public void insertProduct(Product product);
 	
-	//public void updateQuantity(Product product);
+	public void updateQuantity(Product product);
 	
 	public void updateProduct(Product product);
 	

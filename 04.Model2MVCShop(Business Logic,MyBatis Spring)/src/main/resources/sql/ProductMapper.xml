@@ -38,13 +38,13 @@
 				<if test="quantity!=null">#{quantity}</if>
 				)
 	</insert>
-<!-- 	
+	
 	<update id="updateQuantity" parameterType="hashmap">
 		UPDATE product
-		SET quantity=#{}
-		WHERE prod_no = #{product.prodNo}
+		SET quantity=#{prodQuantity}
+		WHERE prod_no = #{prodNo}
 	</update>
- -->	
+ 
 	<update id="updateProduct" parameterType="product">
 		UPDATE product
 		<set>

@@ -16,8 +16,8 @@
 		<result property="tranCode" column="tran_status_code" jdbcType="CHAR"/>
 		<result property="orderDate" column="order_data" jdbcType="DATE"/>
 		<result property="divyDate" column="dlvy_date" jdbcType="DATE"/>
-		<association property="buyer"	column="buyer_id" javaType="user" select="selectUser" />
-		<association property="purchaseProd" column="prod_no" javaType="product" select="selectProduct"/>	
+		<result property="buyer.userId"	column="buyer_id" javaType="user" />
+		<result property="purchaseProd.prodNo" column="prod_no" javaType="product"/>	
 	</resultMap>
 
 
@@ -46,12 +46,12 @@
 				   FROM ( SELECT * FROM transaction
 				   			WHERE buyer_id= #{buyerId}
 							ORDER BY order_data )inner_table
-				   WHERE ROWNUM &lt;= #{endRowNum})
-		    WHERE row_seq BETWEEN #{startRowNum} AND #{endRowNum} 
+				   WHERE ROWNUM &lt;= #{search.endRowNum})
+		    WHERE row_seq BETWEEN #{search.startRowNum} AND #{search.endRowNum} 
 	
 	</select>
 	
-	<select id="getSaleList" parameterType="search" resultMap="purchaseSelectMap">
+	<select id="getSaleList" parameterType="search" resultMap="productSelectMap">
 		SELECT p1.prod_no, p1.prod_name, p1.prod_detail, p2.tran_status_code
 		FROM product p1, transaction p2
 		WHERE p1.prod_no = p2.prod_no
@@ -79,12 +79,40 @@
 	
 	<update id="updatePurchase" parameterType="purchase">
 		UPDATE transaction
-		<set>
-			payment_option = #{},
-		
-		</set>
-	
+	<set>
+	  <if test="paymentOption==1">
+	    payment_option = 'ca',
+	   </if>
+	  <if test="paymentOption==0">
+	    payment_option = 'cd',
+	   </if>
+	    receiver_name = #{receiverName:VARCHAR},
+	    receiver_phone = #{receiverPhone:VARCHAR},
+	    demailaddr= #{divyAddr:VARCHAR},
+	    dlvy_request = #{divyRequest:VARCHAR},
+	    dlvy_date = TO_DATE(#{divyDate},'yyyy-mm-dd')
+	</set>
+		WHERE tran_no = #{tranNo}
 	</update>
+
+
+	<update id="updateTranCode" parameterType="purchase" >
+		UPDATE transaction
+		SET 
+		<if test="tranCode=='004'">tran_status_code = '002'</if> 
+		<if test="tranCode=='002'">tran_status_code = '003'</if> 
+		WHERE tran_no = #{tranNo}
+	</update>
+	
+	<select	id="getTotalCount" parameterType ="hashmap" resultType="int">
+			SELECT COUNT(*)
+	  		FROM(	SELECT *
+					FROM transaction
+					WHERE buyer_id= #{buyerId}
+					ORDER BY order_data
+				 ) countTable		
+	
+	</select>
 
 
 </mapper>

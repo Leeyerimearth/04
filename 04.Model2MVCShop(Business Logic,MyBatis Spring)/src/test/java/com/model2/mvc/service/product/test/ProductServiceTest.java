@@ -1,4 +1,4 @@
-package com.model2.mvc.service.user.test;
+package com.model2.mvc.service.product.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

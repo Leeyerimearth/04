@@ -1,5 +1,6 @@
 package com.model2.mvc.service.product.impl;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductDao;
 import com.model2.mvc.service.product.ProductService;
+import com.model2.mvc.service.purchase.PurchaseDao;
+import com.model2.mvc.service.purchase.PurchaseService;
 
 @Service("productServiceImpl")
 public class ProductServiceImpl implements ProductService {
@@ -17,6 +20,10 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	@Qualifier("productDaoImpl")
 	ProductDao productDao;
+	
+	@Autowired
+	@Qualifier("purchaseServiceImpl")
+	PurchaseService purchaseService;
 	
 	public ProductServiceImpl() {
 		// TODO Auto-generated constructor stub
@@ -26,6 +33,10 @@ public class ProductServiceImpl implements ProductService {
 	{
 		System.out.println("setProductDao Ω««‡");
 		this.productDao = productDao;
+	}
+	public void setPurchaseService(PurchaseService purchaseService)
+	{
+		this.purchaseService = purchaseService;
 	}
 
 	@Override
@@ -41,9 +52,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Map<String, Object> getProductList2(Search search) throws Exception {
+	public HashMap<String, Object> getProductList2(Search search) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+				//productDao.getProductList2(search); -> null¿”
+		return	purchaseService.getSaleList(search);
 	}
 
 	@Override

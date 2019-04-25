@@ -40,6 +40,7 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public List<Product> getProductList2(Search search) {
 		// TODO Auto-generated method stub
+		System.out.println("얘가 사실 갔다오는게 없다.");
 		return null;
 	}
 
@@ -55,16 +56,23 @@ public class ProductDaoImpl implements ProductDao {
 		System.out.println(product +"productDAOIMPL");
 		sqlSession.insert("ProductMapper.insertProduct",product);
 	}
-/*
+
 	@Override
 	public void updateQuantity(Product product) { // HashMap map) {
+		
+		Product getProduct=this.findProduct(product.getProdNo());
+		int prodQuantity = getProduct.getQuantity() - product.getQuantity();
+		
+		HashMap<String,Integer> map = new HashMap<String,Integer>();
+		map.put("prodQuantity", prodQuantity);
+		map.put("prodNo", product.getProdNo());
 		// TODO Auto-generated method stub
 		// 여기서 findProduct부르고 map으로 데이터 전달. product랑 ,prodQuantity -> serviceImlp에서 한댜아
 		//product대산에 Hashmap을 전달받고 그걸 다시 전달한다. Hashmap에는, findProduct를 불러 얻은 product랑,quantity를 string이 저장되어있다.
-		sqlSession.update("ProductMapper.updateQuantity", product); //purchase할때 사용된다.
+		sqlSession.update("ProductMapper.updateQuantity", map); //purchase할때 사용된다.
 															//map
 	}
-*/
+
 	@Override
 	public void updateProduct(Product product) {
 		// TODO Auto-generated method stub

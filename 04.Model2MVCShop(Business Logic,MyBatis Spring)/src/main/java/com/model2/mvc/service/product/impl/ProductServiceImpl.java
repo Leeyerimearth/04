@@ -55,6 +55,9 @@ public class ProductServiceImpl implements ProductService {
 	public HashMap<String, Object> getProductList2(Search search) throws Exception {
 		// TODO Auto-generated method stub
 				//productDao.getProductList2(search); -> null¿”
+		
+		
+		//purchaseDao.getSaleList(search);
 		return	purchaseService.getSaleList(search);
 	}
 

@@ -1,5 +1,8 @@
 package com.model2.mvc.service.product.test;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.model2.mvc.common.Search;
 import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
 
@@ -53,7 +57,7 @@ public class ProductServiceTest {
 		//Assert.assertNotNull(productService.getProduct(10008));
 	}
 	
-	@Test
+	//@Test
 	public void testUpdateProduct() throws Exception
 	{
 		Product product = productService.getProduct(10060);
@@ -77,6 +81,38 @@ public class ProductServiceTest {
 		Assert.assertEquals(100, product.getQuantity());
 		
 		
+	}
+	
+	@Test
+	public void testGetProductList2() throws Exception
+	{
+		Search search = new Search();
+	 	search.setCurrentPage(1);
+	 	search.setPageSize(3);
+		Map<String,Object> map =productService.getProductList2(search);
+		
+		List<Object> list = (List<Object>) map.get("list"); // 아예object로 받아버리넹
+		Assert.assertEquals(3, list.size());
+		
+		Integer totalCount = (Integer)map.get("totalCount");
+		System.out.println("totalCount: "+totalCount);
+		
+		System.out.println("=======================================");
+		
+		search.setCurrentPage(1);
+	 	search.setPageSize(3);
+	 	search.setSearchCondition("1");
+	 	search.setSearchKeyword("자전거");
+	 	map = productService.getProductList2(search);	 	
+	 	list = (List<Object>)map.get("list");
+	 	Assert.assertEquals(3, list.size());
+	 	
+	 	//==> console 확인
+	 	//System.out.println(list);
+	 	
+	 	totalCount = (Integer)map.get("totalCount");
+	 	System.out.println("???"+totalCount);
+	
 	}
 
 }

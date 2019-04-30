@@ -1,5 +1,8 @@
 package com.model2.mvc.service.purchase.test;
 
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +57,7 @@ public class PurchaseServiceTest{
 		Assert.assertEquals("넣어지나 봐주세요!",purchase.getDivyRequest());
 	}
 	
-	@Test
+	//@Test
 	public void testGetPurchase() throws Exception
 	{
 		
@@ -79,37 +82,80 @@ public class PurchaseServiceTest{
 		Assert.assertEquals("10001",purchase.getPurchaseProd().getProdNo());
 	}
 	
-	@Test
+	//@Test
 	public void testGetPurchase2()
 	{
 		//Search search = new Search();
 		//search.setCurrentPage(1);
 		//search.setPageSize(3);
 		//purchaseService.getPurchase2(prodNo);
-		Purchase purchase = purchaseService.getPurchase2(prodNo);
+		
+		//getPurchase2가 prodNo로 purchase를 가져오는건데, prodNo는 unique하지 않다.
+		//Purchase purchase = purchaseService.getPurchase2(prodNo);
 	}
 	
 	//@Test
-	public void testGetPurchaseList()
+	public void testGetPurchaseList() throws Exception
 	{
+		Search search = new Search();
+		search.setCurrentPage(1);
+		search.setPageSize(3);
+		
+		String buyerId = "user17";
+		Map<String,Object> map =purchaseService.getPurchaseList(search, buyerId);
+		List<Object> list = (List<Object>) map.get("list");
+		
+		Assert.assertEquals(3, list.size());
+		
+		int totalCount = (int) map.get("totalCount");
+		System.out.println(totalCount);
 		
 	}
 	
 	//@Test
-	public void testGetSaleList()
+	public void testGetSaleList() throws Exception
 	{
+		Search search = new Search();
+		search.setCurrentPage(1);
+		search.setPageSize(3);
+		
+		Map<String,Object> map = purchaseService.getSaleList(search);
+		List<Object> list = (List<Object>) map.get("list");
+		Assert.assertEquals(3, list.size());
+		
+		int totalCount = (int) map.get("totalCount");
+		System.out.println(totalCount);
 		
 	}
 	
 	//@Test
-	public void testUpdatePurcahse()
+	public void testUpdatePurcahse() throws Exception
 	{
 		
+		Purchase purchase = purchaseService.getPurchase(10008);
+		purchase.setReceiverName("이예림");
+		purchase.setDivyRequest("바꿧다test");
+		purchase.setPaymentOption("0");
+		
+		purchaseService.updatePurcahse(purchase);
+		
+		purchase=purchaseService.getPurchase(10008);
+		
+		Assert.assertEquals("이예림", purchase.getReceiverName());
+		Assert.assertEquals("바꿧다test", purchase.getDivyRequest());
+		//2개만 테스트 해봤다.
 	}
 	
-	//@Test
-	public void testUpdateTranCode()
+	@Test
+	public void testUpdateTranCode() throws Exception
 	{
+		Purchase purchase = purchaseService.getPurchase(10020);
+		
+		purchaseService.updateTranCode(purchase);
+		
+		purchase = purchaseService.getPurchase(10020);
+		
+		Assert.assertEquals("002",purchase.getTranCode());
 		
 	}
 }
